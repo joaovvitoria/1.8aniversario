@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surpresa Especial ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background-color: #ffe6e6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #ff4d4d;
+        }
+
+        /* FASE 1: Sopa de Letras / Ordenar */
+        #fase-1 {
+            display: block;
+        }
+        
+        .letras-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .letra {
+            background-color: #ffb3b3;
+            padding: 15px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .letra:hover {
+            transform: scale(1.1);
+            background-color: #ff8080;
+        }
+
+        #resposta {
+            min-height: 50px;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #ff4d4d;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #ff4d4d;
+            padding-bottom: 10px;
+        }
+
+        button.limpar {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button.limpar:hover {
+            background-color: #cc0000;
+        }
+
+        /* FASE 2: Fotos */
+        #fase-2 {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 60vh;
+        }
+
+        .fotos-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            margin-top: 20px;
+        }
+
+        .foto-wrapper {
+            text-align: center;
+        }
+
+        .foto {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #ff4d4d;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* FASE 3: Mensagem Final */
+        #fase-3 {
+            display: none;
+        }
+
+        .mensagem-amor {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #d90000;
+        }
+
+        .coracao {
+            font-size: 50px;
+            animation: palpitar 1s infinite;
+        }
+
+        @keyframes palpitar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="fase-1" class="container">
+        <h1>Desafio Especial!</h1>
+        <p>Clica nas letras/números para ordenares a data secreta.</p>
+        
+        <div id="resposta"></div>
+        
+        <div class="letras-container" id="botoes-letras">
+            </div>
+
+        <button class="limpar" onclick="limparResposta()">Apagar tudo</button>
+    </div>
+
+    <div id="fase-2" class="container">
+        <h1>A Grande Questão...</h1>
+        <p>Quem é o mais totoso nesta relação?</p>
+        
+        <div class="fotos-container" id="area-fotos">
+            <div class="foto-wrapper" id="wrapper-tua">
+                <img src="a_tua_foto.jpg" alt="A tua foto" class="foto" id="foto-tua" onclick="avancarFase3()">
+                <p>Eu</p>
+            </div>
+            
+            <div class="foto-wrapper" id="wrapper-dela">
+                <img src="a_foto_dela.jpg" alt="A foto dela" class="foto" id="foto-dela">
+                <p>Tu</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="fase-3" class="container">
+        <div class="coracao">❤️</div>
+        <h1>Acertaste em cheio!</h1>
+        <p class="mensagem-amor">
+            Feliz 1 ano e 8 meses de namoro, meu amor!<br>
+            És a pessoa mais incrível da minha vida (mas o mais totoso sou eu, está provado cientificamente).<br>
+            Amo-te muito! ❤️
+        </p>
+    </div>
+
+    <script>
+        // Lógica da Fase 1 (Ordenar Frase)
+        const fraseAlvo = "1FEVEREIRO2025";
+        let letrasMisturadas = "V1O02F2E5EREIR".split(""); // Frase alvo misturada
+        let respostaAtual = "";
+
+        const containerLetras = document.getElementById("botoes-letras");
+        const divResposta = document.getElementById("resposta");
+
+        // Inicializar os botões da sopa de letras
+        function iniciarJogoLetras() {
+            containerLetras.innerHTML = "";
+            letrasMisturadas.forEach((letra, index) => {
+                let btn = document.createElement("div");
+                btn.className = "letra";
+                btn.innerText = letra;
+                btn.onclick = () => adicionarLetra(letra, btn);
+                containerLetras.appendChild(btn);
+            });
+        }
+
+        function adicionarLetra(letra, btnElement) {
+            respostaAtual += letra;
+            divResposta.innerText = respostaAtual;
+            btnElement.style.visibility = "hidden"; // Esconde a letra clicada
+
+            if (respostaAtual.length === fraseAlvo.length) {
+                if (respostaAtual === fraseAlvo) {
+                    setTimeout(() => {
+                        document.getElementById("fase-1").style.display = "none";
+                        document.getElementById("fase-2").style.display = "block";
+                        configurarFuga();
+                    }, 500);
+                } else {
+                    alert("Ops! Data errada, tenta outra vez, amor!");
+                    limparResposta();
+                }
+            }
+        }
+
+        function limparResposta() {
+            respostaAtual = "";
+            divResposta.innerText = "";
+            const botoes = document.querySelectorAll(".letra");
+            botoes.forEach(btn => btn.style.visibility = "visible");
+        }
+
+        iniciarJogoLetras();
+
+        // Lógica da Fase 2 (Foto a fugir)
+        function configurarFuga() {
+            const fotoDelaWrapper = document.getElementById("wrapper-dela");
+            const areaFotos = document.getElementById("area-fotos");
+
+            // Evento para fugir do rato
+            fotoDelaWrapper.addEventListener("mouseover", fugir);
+            fotoDelaWrapper.addEventListener("touchstart", fugir); // Para telemóveis
+        }
+
+        function fugir() {
+            const fotoDelaWrapper = document.getElementById("wrapper-dela");
+            const containerFase2 = document.getElementById("fase-2");
+            
+            // Mudar posição para absolute para conseguir mover livremente
+            fotoDelaWrapper.style.position = "absolute";
+            
+            // Calcular limites para não sair do ecrã
+            const maxX = containerFase2.clientWidth - fotoDelaWrapper.clientWidth;
+            const maxY = containerFase2.clientHeight - fotoDelaWrapper.clientHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * (maxY - 50)); // -50 para dar margem
+
+            fotoDelaWrapper.style.left = randomX + "px";
+            fotoDelaWrapper.style.top = randomY + "px";
+        }
+
+        // Lógica da Fase 3
+        function avancarFase3() {
+            document.getElementById("fase-2").style.display = "none";
+            document.getElementById("fase-3").style.display = "block";
+        }
+    </script>
+</body>
+</html>
