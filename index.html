@@ -109,7 +109,11 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
         }
 
         button.limpar {
@@ -128,6 +132,22 @@
 
         button.ajuda-btn:hover {
             background-color: #b30000;
+        }
+
+        button.surpresa-btn {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+            animation: pulsarBotao 2s infinite;
+        }
+
+        @keyframes pulsarBotao {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 77, 77, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
         }
 
         /* Janela de Ajuda */
@@ -200,6 +220,25 @@
             animation: palpitar 1s infinite;
         }
 
+        /* FASE 4: A Rosa */
+        #fase-4 {
+            display: none;
+        }
+
+        .rosa-virtual {
+            font-size: 120px;
+            display: inline-block;
+            margin: 20px 0;
+            filter: drop-shadow(0 10px 15px rgba(255, 0, 0, 0.4));
+            animation: flutuarRosa 3s ease-in-out infinite;
+        }
+
+        @keyframes flutuarRosa {
+            0% { transform: translateY(0px) rotate(-5deg) scale(1); }
+            50% { transform: translateY(-15px) rotate(5deg) scale(1.05); }
+            100% { transform: translateY(0px) rotate(-5deg) scale(1); }
+        }
+
         @keyframes palpitar {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
@@ -209,6 +248,7 @@
 </head>
 <body>
 
+    <!-- FASE 1 -->
     <div id="fase-1" class="container">
         <h1>Desafio Especial!</h1>
         <p class="instrucao">Decifra o código misturado abaixo para abrir o teu presente...</p>
@@ -216,7 +256,8 @@
         <div id="resposta"></div>
         
         <div class="letras-container" id="botoes-letras">
-            </div>
+            <!-- As letras serão geradas por JavaScript -->
+        </div>
 
         <div class="botoes-acao">
             <button class="limpar" onclick="limparResposta()">Apagar tudo</button>
@@ -224,12 +265,14 @@
         </div>
     </div>
 
+    <!-- Janela de Ajuda -->
     <div id="janela-ajuda" class="janela-ajuda">
         <h2>Uma Pista para Ti!</h2>
         <p>Este código representa algo que celebramos todos os meses... uma data importante para nós dois!</p>
         <button class="limpar" onclick="fecharAjuda()">Entendi!</button>
     </div>
 
+    <!-- FASE 2 -->
     <div id="fase-2" class="container">
         <h1>A Grande Questão...</h1>
         <p>Quem é o mais totoso nesta relação?</p>
@@ -247,6 +290,7 @@
         </div>
     </div>
 
+    <!-- FASE 3 -->
     <div id="fase-3" class="container">
         <div class="coracao">❤️</div>
         <h1>Acertaste em cheio!</h1>
@@ -254,6 +298,20 @@
             Feliz 1 ano e 8 meses de namoro, meu amor!<br>
             És a pessoa mais incrível da minha vida (mas o mais totoso sou eu, está provado cientificamente).<br>
             Amo-te muito! ❤️
+        </p>
+        <button class="surpresa-btn" onclick="avancarFase4()">Só mais uma surpresa...</button>
+    </div>
+
+    <!-- FASE 4: A Rosa -->
+    <div id="fase-4" class="container">
+        <div class="rosa-virtual">🌹</div>
+        <!-- NOTA: Se quiseres meter uma foto real de uma rosa, apaga a linha de cima e usa a linha de baixo (tirando os comentários <!-- e -->): -->
+        <!-- <img src="rosa.jpg" alt="Rosa" style="width: 250px; border-radius: 15px; margin: 20px 0; animation: flutuarRosa 3s ease-in-out infinite;"> -->
+        
+        <h1>Para Ti, Meu Amor</h1>
+        <p class="mensagem-amor">
+            Já que não estou perto de ti para te dar esta rosa, dou-te virtualmente.<br>
+            Saudades tuas! ❤️
         </p>
     </div>
 
@@ -318,8 +376,7 @@
             const fotoDelaWrapper = document.getElementById("wrapper-dela");
             const fotoDelaImg = document.getElementById("foto-dela");
             const containerFase2 = document.getElementById("fase-2");
-            const areaFotos = document.getElementById("area-fotos");
-
+            
             const fugirEvent = (e) => fugir(e, fotoDelaWrapper, containerFase2);
 
             fotoDelaImg.addEventListener("mouseover", fugirEvent);
@@ -331,8 +388,8 @@
 
             wrapper.style.position = "absolute";
             
-            const maxX = container.clientWidth - wrapper.clientWidth - 30; // Margem
-            const maxY = container.clientHeight - wrapper.clientHeight - 30; // Margem
+            const maxX = container.clientWidth - wrapper.clientWidth - 30;
+            const maxY = container.clientHeight - wrapper.clientHeight - 30;
             
             const randomX = Math.floor(Math.random() * Math.max(0, maxX));
             const randomY = Math.floor(Math.random() * Math.max(0, maxY));
@@ -341,9 +398,16 @@
             wrapper.style.top = randomY + "px";
         }
 
+        // Lógica da Fase 3
         function avancarFase3() {
             document.getElementById("fase-2").style.display = "none";
             document.getElementById("fase-3").style.display = "block";
+        }
+
+        // Lógica da Fase 4 (A Rosa)
+        function avancarFase4() {
+            document.getElementById("fase-3").style.display = "none";
+            document.getElementById("fase-4").style.display = "block";
         }
     </script>
 </body>
