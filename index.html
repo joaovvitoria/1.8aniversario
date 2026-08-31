@@ -3,34 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surpresa Especial ❤️</title>
+    <title>Desafio Especial ❤️</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            font-family: 'Montserrat', 'Arial', sans-serif;
             background-color: #ffe6e6;
-            color: #333;
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff9999" opacity="0.3" d="M50 30c-15-15-40-5-40 20 0 20 20 40 40 50 20-10 40-30 40-50 0-25-25-35-40-20z"/></svg>'),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff6666" opacity="0.2" d="M50 30c-15-15-40-5-40 20 0 20 20 40 40 50 20-10 40-30 40-50 0-25-25-35-40-20z"/></svg>');
+            background-size: 100px 100px, 150px 150px;
+            animation: moveHearts 5s linear infinite;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            color: #333;
+        }
+
+        @keyframes moveHearts {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 100px 100px, 150px 150px; }
         }
 
         .container {
             text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
             max-width: 800px;
             width: 90%;
+            border: 3px solid #ff9999;
+            backdrop-filter: blur(5px);
         }
 
         h1 {
             color: #ff4d4d;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p.instrucao {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
         }
 
         /* FASE 1: Sopa de Letras / Ordenar */
@@ -41,50 +61,97 @@
         .letras-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
 
         .letra {
-            background-color: #ffb3b3;
-            padding: 15px 20px;
-            font-size: 24px;
+            background: #ffb3b3;
+            color: white;
+            padding: 20px 25px;
+            font-size: 28px;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
 
         .letra:hover {
-            transform: scale(1.1);
-            background-color: #ff8080;
+            transform: scale(1.1) translateY(-5px);
+            background: #ff8080;
         }
 
         #resposta {
-            min-height: 50px;
-            font-size: 28px;
+            min-height: 60px;
+            font-size: 32px;
             font-weight: bold;
             letter-spacing: 5px;
             color: #ff4d4d;
             margin-bottom: 20px;
-            border-bottom: 2px dashed #ff4d4d;
+            border-bottom: 3px dashed #ff4d4d;
             padding-bottom: 10px;
         }
 
-        button.limpar {
-            background-color: #ff4d4d;
-            color: white;
+        .botoes-acao {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
             border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 12px 25px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button.limpar {
+            background-color: #ff9999;
+            color: white;
         }
 
         button.limpar:hover {
-            background-color: #cc0000;
+            background-color: #ff6666;
+        }
+
+        button.ajuda-btn {
+            background-color: #d90000;
+            color: white;
+        }
+
+        button.ajuda-btn:hover {
+            background-color: #b30000;
+        }
+
+        /* Janela de Ajuda */
+        .janela-ajuda {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #ff4d4d;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .janela-ajuda p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         /* FASE 2: Fotos */
@@ -129,7 +196,7 @@
         }
 
         .coracao {
-            font-size: 50px;
+            font-size: 60px;
             animation: palpitar 1s infinite;
         }
 
@@ -144,14 +211,23 @@
 
     <div id="fase-1" class="container">
         <h1>Desafio Especial!</h1>
-        <p>Clica nas letras/números para ordenares a data secreta.</p>
+        <p class="instrucao">Decifra o código misturado abaixo para abrir o teu presente...</p>
         
         <div id="resposta"></div>
         
         <div class="letras-container" id="botoes-letras">
             </div>
 
-        <button class="limpar" onclick="limparResposta()">Apagar tudo</button>
+        <div class="botoes-acao">
+            <button class="limpar" onclick="limparResposta()">Apagar tudo</button>
+            <button class="ajuda-btn" onclick="abrirAjuda()">Pista</button>
+        </div>
+    </div>
+
+    <div id="janela-ajuda" class="janela-ajuda">
+        <h2>Uma Pista para Ti!</h2>
+        <p>Este código representa algo que celebramos todos os meses... uma data importante para nós dois!</p>
+        <button class="limpar" onclick="fecharAjuda()">Entendi!</button>
     </div>
 
     <div id="fase-2" class="container">
@@ -184,13 +260,12 @@
     <script>
         // Lógica da Fase 1 (Ordenar Frase)
         const fraseAlvo = "1FEVEREIRO2025";
-        let letrasMisturadas = "V1O02F2E5EREIR".split(""); // Frase alvo misturada
+        let letrasMisturadas = "V1O02F2E5EREIR".split(""); 
         let respostaAtual = "";
 
         const containerLetras = document.getElementById("botoes-letras");
         const divResposta = document.getElementById("resposta");
 
-        // Inicializar os botões da sopa de letras
         function iniciarJogoLetras() {
             containerLetras.innerHTML = "";
             letrasMisturadas.forEach((letra, index) => {
@@ -205,7 +280,7 @@
         function adicionarLetra(letra, btnElement) {
             respostaAtual += letra;
             divResposta.innerText = respostaAtual;
-            btnElement.style.visibility = "hidden"; // Esconde a letra clicada
+            btnElement.style.visibility = "hidden"; 
 
             if (respostaAtual.length === fraseAlvo.length) {
                 if (respostaAtual === fraseAlvo) {
@@ -215,7 +290,7 @@
                         configurarFuga();
                     }, 500);
                 } else {
-                    alert("Ops! Data errada, tenta outra vez, amor!");
+                    alert("Ops! Código errado, tenta outra vez, amor!");
                     limparResposta();
                 }
             }
@@ -228,37 +303,44 @@
             botoes.forEach(btn => btn.style.visibility = "visible");
         }
 
+        function abrirAjuda() {
+            document.getElementById("janela-ajuda").style.display = "block";
+        }
+
+        function fecharAjuda() {
+            document.getElementById("janela-ajuda").style.display = "none";
+        }
+
         iniciarJogoLetras();
 
         // Lógica da Fase 2 (Foto a fugir)
         function configurarFuga() {
             const fotoDelaWrapper = document.getElementById("wrapper-dela");
+            const fotoDelaImg = document.getElementById("foto-dela");
+            const containerFase2 = document.getElementById("fase-2");
             const areaFotos = document.getElementById("area-fotos");
 
-            // Evento para fugir do rato
-            fotoDelaWrapper.addEventListener("mouseover", fugir);
-            fotoDelaWrapper.addEventListener("touchstart", fugir); // Para telemóveis
+            const fugirEvent = (e) => fugir(e, fotoDelaWrapper, containerFase2);
+
+            fotoDelaImg.addEventListener("mouseover", fugirEvent);
+            fotoDelaImg.addEventListener("touchstart", fugirEvent);
         }
 
-        function fugir() {
-            const fotoDelaWrapper = document.getElementById("wrapper-dela");
-            const containerFase2 = document.getElementById("fase-2");
-            
-            // Mudar posição para absolute para conseguir mover livremente
-            fotoDelaWrapper.style.position = "absolute";
-            
-            // Calcular limites para não sair do ecrã
-            const maxX = containerFase2.clientWidth - fotoDelaWrapper.clientWidth;
-            const maxY = containerFase2.clientHeight - fotoDelaWrapper.clientHeight;
-            
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * (maxY - 50)); // -50 para dar margem
+        function fugir(e, wrapper, container) {
+            if (e.type === 'touchstart') e.preventDefault();
 
-            fotoDelaWrapper.style.left = randomX + "px";
-            fotoDelaWrapper.style.top = randomY + "px";
+            wrapper.style.position = "absolute";
+            
+            const maxX = container.clientWidth - wrapper.clientWidth - 30; // Margem
+            const maxY = container.clientHeight - wrapper.clientHeight - 30; // Margem
+            
+            const randomX = Math.floor(Math.random() * Math.max(0, maxX));
+            const randomY = Math.floor(Math.random() * Math.max(0, maxY));
+
+            wrapper.style.left = randomX + "px";
+            wrapper.style.top = randomY + "px";
         }
 
-        // Lógica da Fase 3
         function avancarFase3() {
             document.getElementById("fase-2").style.display = "none";
             document.getElementById("fase-3").style.display = "block";
